@@ -1,0 +1,4 @@
+(library
+  (name union_asdl)
+  (preprocess (pps metaquot.ppx))
+  (libraries ppxlib asdl metapp ocamlsyntax))

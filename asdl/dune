@@ -1,0 +1,6 @@
+(library
+  (name asdl)
+  (libraries redirect))
+
+(ocamllex lexer)
+(menhir (modules parser))

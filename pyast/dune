@@ -1,0 +1,85 @@
+(library
+  (public_name pyast)
+  (preprocess (pps refl.ppx))
+  (flags -w -30 -linkall)
+  (libraries pyml redirect refl pyast.utils))
+
+(rule
+ (targets "union.ml" "asdl.union")
+ (deps (glob_files "../python/*.asdl"))
+ (action (run ../compute_union_asdl/compute_union_asdl.exe %{targets} %{deps})))
+
+(rule
+ (target "v2_5.ml")
+ (deps "../python/v2.5.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 2.5 -o %{target} %{deps})))
+
+(rule
+ (target "v2_6.ml")
+ (deps "../python/v2.6.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 2.6 -o %{target} %{deps})))
+
+(rule
+ (target "v2_7.ml")
+ (deps "../python/v2.7.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 2.7 -o %{target} %{deps})))
+
+(rule
+ (target "v3_0.ml")
+ (deps "../python/v3.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_0_1.ml")
+ (deps "../python/v3.0.1.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.0.1 -o %{target} %{deps})))
+
+(rule
+ (target "v3_1.ml")
+ (deps "../python/v3.1.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.1 -o %{target} %{deps})))
+
+(rule
+ (target "v3_2.ml")
+ (deps "../python/v3.2.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.2 -o %{target} %{deps})))
+
+(rule
+ (target "v3_3_0.ml")
+ (deps "../python/v3.3.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.3.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_3_1.ml")
+ (deps "../python/v3.3.1.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.3.1 -o %{target} %{deps})))
+
+(rule
+ (target "v3_4_0.ml")
+ (deps "../python/v3.4.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.4.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_5_0.ml")
+ (deps "../python/v3.5.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.5.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_6_0.ml")
+ (deps "../python/v3.6.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.6.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_7_0.ml")
+ (deps "../python/v3.7.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.7.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_8_0.ml")
+ (deps "../python/v3.8.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.8.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_9_0.ml")
+ (deps "../python/v3.9.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.9.0 -o %{target} %{deps})))

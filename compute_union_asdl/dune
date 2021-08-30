@@ -1,0 +1,6 @@
+(executable
+  (name compute_union_asdl)
+  (flags -open Stdcompat)
+  (preprocess (pps metaquot.ppx))
+  (libraries asdl cmdliner ppxlib metapp redirect stdcompat ocamlsyntax
+    union_asdl))

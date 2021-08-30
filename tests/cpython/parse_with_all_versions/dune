@@ -1,0 +1,3 @@
+(executable
+  (name parse_with_all_versions)
+  (libraries pyast cmdliner))

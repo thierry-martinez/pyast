@@ -1,0 +1,4 @@
+(test
+  (name simple)
+  (preprocess (pps refl.ppx pattern.ppx))
+  (libraries pyast refl pattern alcotest))
