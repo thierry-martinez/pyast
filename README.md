@@ -8,7 +8,7 @@ versions from Python 2.5 to Python 3.9.
 The library is not packaged in the official opam repository yet.
 It can be pinned with the following command.
 ```
-opam pin add https://github.com/thierry-martinez/pyast
+opam pin add https://github.com/thierry-martinez/pyast.git
 ```
 
 Otherwise, the command `dune build @install && dune install` performs
