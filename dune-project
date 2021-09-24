@@ -27,4 +27,5 @@ Python AST
   (cmdliner (>= 1.0.4))
   (redirect (>= 0.1.1))
   (stdcompat (>= 10))
+  (menhir (>= 20210419))
   (odoc (and :with-doc (>= 1.5.1)))))
