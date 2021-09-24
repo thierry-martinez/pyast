@@ -3,6 +3,16 @@
 This library provides versioned abstract syntax tree for all Python
 versions from Python 2.5 to Python 3.9.
 
+## Related work
+
+The library [`pyre-ast`](https://github.com/grievejia/pyre-ast) is
+another OCaml library for parsing Python files using the Python
+interpreter itself.
+However, `pyast` emphasizes compability between Python versions,
+enabling OCaml programs to be written with the version of the AST of
+their choice and still be compatible with the interpreter installed on
+the system, whatever its version.
+
 ## Installation
 
 The library is not packaged in the official opam repository yet.
