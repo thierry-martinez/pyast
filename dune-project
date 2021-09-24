@@ -17,7 +17,8 @@
  (name pyast)
  (synopsis "Python AST")
  (description "\
-Python AST
+This library provides versioned abstract syntax tree for all Python
+versions from Python 2.5 to Python 3.9.
 ")
  (depends
   (ocaml (>= 4.03.0))
@@ -25,7 +26,7 @@ Python AST
   (pyml (>= 20210226))
   (refl (>= 0.4.0))
   (cmdliner (>= 1.0.4))
-  (redirect (>= 0.1.1))
+  (redirect (>= 0.2.0))
   (stdcompat (>= 10))
   (menhir (>= 20210419))
   (odoc (and :with-doc (>= 1.5.1)))))
