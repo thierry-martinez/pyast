@@ -17,4 +17,3 @@ let of_file filename =
   let channel = open_in filename in
   Redirect.read_and_close channel (fun () ->
     of_channel ~filename channel)
-
