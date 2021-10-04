@@ -29,4 +29,5 @@ versions from Python 2.5 to Python 3.9.
   (redirect (>= 0.2.0))
   (stdcompat (>= 10))
   (menhir (>= 20210419))
+  (pattern (and :with-test (>= 0.3.0)))
   (odoc (and :with-doc (>= 1.5.1)))))
