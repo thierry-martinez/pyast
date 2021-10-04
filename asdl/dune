@@ -1,5 +1,6 @@
 (library
   (name asdl)
+  (flags -open Stdcompat)
   (libraries redirect))
 
 (ocamllex lexer)
