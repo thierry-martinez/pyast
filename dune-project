@@ -11,7 +11,7 @@
 (homepage "https://github.com/thierry.martinez/pyast")
 (bug_reports "https://github.com/thierry.martinez/pyast")
 (documentation "https://github.com/thierry.martinez/pyast")
-(version "1.0.1")
+(version "0.1.0")
 
 (package
  (name pyast)
