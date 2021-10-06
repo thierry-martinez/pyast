@@ -24,6 +24,7 @@ depends: [
   "pattern" {with-test & >= "0.3.0"}
   "alcotest" {with-test & >= "1.4.0"}
   "odoc" {with-doc & >= "1.5.1"}
+  "conf-python-3-dev" {with-test}
 ]
 build: [
   ["dune" "subst"] {dev}
