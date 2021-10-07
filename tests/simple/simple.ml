@@ -1,7 +1,7 @@
 let check_pattern source (pattern : _ Pattern.matcher) =
-  let ast = Pyast.V3_9_0.parse source in
+  let ast = Pyast.Latest.parse source in
   match
-    pattern ~quoted:(Refl.Lift.Exp.lift [%refl: Pyast.V3_9_0.mod_] [] ast) ast
+    pattern ~quoted:(Refl.Lift.Exp.lift [%refl: Pyast.Latest.mod_] [] ast) ast
   with
   | Ok _bindings -> ()
   | Error failure ->

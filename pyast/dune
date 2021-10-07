@@ -83,3 +83,8 @@
  (target "v3_9_0.ml")
  (deps "../python/v3.9.0.asdl" "asdl.union")
  (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.9.0 -o %{target} %{deps})))
+
+(rule
+ (target "v3_10_0.ml")
+ (deps "../python/v3.10.0.asdl" "asdl.union")
+ (action (run ../ml_of_asdl/ml_of_asdl.exe -v 3.10.0 -o %{target} %{deps})))

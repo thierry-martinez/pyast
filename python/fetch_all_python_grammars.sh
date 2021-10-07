@@ -2,6 +2,8 @@
 set -ex
 if [ ! -d cpython ]; then
   git clone https://github.com/python/cpython.git
+else
+  (cd cpython && git fetch)
 fi
 versions=($(cd cpython && git tag --sort v:refname | grep '^v[[:digit:].]\+$'))
 last=""

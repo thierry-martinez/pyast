@@ -1,7 +1,7 @@
 # Python versioned abstract syntax trees and interface to the Python parser
 
 This library provides versioned abstract syntax tree for all Python
-versions from Python 2.5 to Python 3.9.
+versions from Python 2.5 to Python 3.10.
 
 ## Related work
 

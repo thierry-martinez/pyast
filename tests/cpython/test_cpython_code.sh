@@ -2,6 +2,8 @@
 set -ex
 if [ ! -d cpython ]; then
   git clone https://github.com/python/cpython.git
+else
+  (cd cpython && git fetch)
 fi
 versions=($(ls -1 ../../python/*.asdl | sed -n 's/^.*\(v[[:digit:].]\+\)[.].*$/\1/p'))
 syntax_file="cpython/Parser/Python.asdl"
