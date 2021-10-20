@@ -22,7 +22,6 @@ versions from Python 2.5 to Python 3.10.
 ")
  (depends
   (ocaml (>= 4.03.0))
-  (dune (>= 1.11.3))
   (pyml (>= 20210226))
   (refl (>= 0.4.0))
   (cmdliner (>= 1.0.4))
