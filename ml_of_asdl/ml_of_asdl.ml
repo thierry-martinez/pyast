@@ -201,7 +201,7 @@ let add_builder_of_constructor type_id union_attributes
        | "slice", "Slice" ->
           [%expr expr_slice ?upper ?step ?lower ()]
        | "slice", "ExtSlice" ->
-          [%expr expr_tuple ?elts:dims ()]
+          [%expr expr_tuple ?elts:dims ~ctx:Load ()]
        | "slice", "Index" ->
           [%expr Option.get value]
        | "slice", "Ellipsis" ->
