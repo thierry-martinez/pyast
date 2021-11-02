@@ -62,10 +62,7 @@ Pyast.Latest.Ast.Module
      lineno = 1; col_offset = 0; end_lineno = None; end_col_offset = None}];
   type_ignores = []}
 ```
-
-Parsing is delegated to the Python interpreter,
-which is executed through
-[http://github.com/thierry-martinez/pyml](pyml) bindings.
+Parsing is delegated to the Python interpreter which is executed through bindings that are provided by [`py.ml`](https://github.com/thierry-martinez/pyml#pyml-ocaml-bindings-for-python "pyml: OCaml bindings for Python").
 All the modules `Pyast.V*` mentioned above provide the following functions:
 
 * `val parse_ast : Py.Object.t -> Ast.mod_`, which builds an OCaml
