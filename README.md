@@ -92,7 +92,7 @@ particular a function
 These functions are automatically called by the functions `parse*`
 mentioned above to convert the abstract syntax tree parsed by the
 version of the Python interpreter available to the targeted version.
-(The module corresponding the the version of the Python interpreter
+(The module corresponding to the version of the Python interpreter
 is available through the function `Pyast.get_current_version`,
 and more generally `Pyast.get_version` returns the first-class module
 corresponding to a given version at run-time.)
