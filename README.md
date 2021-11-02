@@ -84,10 +84,8 @@ Note that `Pyast.V*.Ast` is included in `Pyast.V*`, and in particular,
 `Pyast.V*.Ast.mod_` and `Pyast.V*.mod_` both denote the type of a
 Python module.
 
-The abstract syntax trees are automatically generated from the ASDL
-grammar used in the
-[https://github.com/python/cpython/blob/main/Parser/Python.asdl](CPython
-implementation). 
+The abstract syntax trees are automatically generated from
+[the ASDL grammar which is used in the CPython implementation](https://github.com/python/cpython/blob/main/Parser/Python.asdl "Python.asdl grammar file").
 Conversions can be performed between AST versions
 with the `Pyast.V*.To` functors: for instance, the module
 `Pyast.V2_5.To (Pyast.V3_9_0)` provides a module containing functions
