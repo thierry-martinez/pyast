@@ -7,10 +7,10 @@
 (license "BSD-2-Clause")
 (maintainers "Thierry Martinez <thierry.martinez@inria.fr>")
 (authors "Thierry Martinez <thierry.martinez@inria.fr>")
-(source (uri "git+https://github.com/thierry.martinez/pyast.git"))
-(homepage "https://github.com/thierry.martinez/pyast")
-(bug_reports "https://github.com/thierry.martinez/pyast")
-(documentation "https://github.com/thierry.martinez/pyast")
+(source (uri "git+https://github.com/thierry-martinez/pyast.git"))
+(homepage "https://github.com/thierry-martinez/pyast")
+(bug_reports "https://github.com/thierry-martinez/pyast")
+(documentation "https://github.com/thierry-martinez/pyast")
 (version "0.1.0")
 
 (package
