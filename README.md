@@ -1,7 +1,7 @@
 # Python versioned abstract syntax trees and interface to the Python parser
 
 This library provides versioned abstract syntax tree for all Python
-versions from Python 2.5 to Python 3.10.
+versions from Python 2.5 to Python 3.11.
 
 ## Related work
 
@@ -27,7 +27,7 @@ the installation (or, equivalently, `make install`).
 ## Usage
 
 All Python versions are represented as a module, from `Pyast.V2_5` to
-`Pyast.V3_9_0`, which is aliased to `Pyast.Latest`: it is recommended
+`Pyast.V3_11_0`, which is aliased to `Pyast.Latest`: it is recommended
 to use preferably `Pyast.Latest`, unless there is a reason to target a
 particular verison of Python.
 The API documentation can be generated with `opam build @doc`
@@ -40,7 +40,7 @@ generated in `_build/default/_doc/_html/`.
 % dune utop
 # Py.initialize ();;
 # Pyast.Latest.parse "x = 0";;
-- : Pyast.V3_9_0.mod_ =
+- : Pyast.V3_11_0.mod_ =
 Pyast.Latest.Ast.Module
  {Pyast.Latest.Ast.body =
    [{Pyast.Latest.Ast.desc =
@@ -55,7 +55,7 @@ Pyast.Latest.Ast.Module
          {Pyast.Latest.Ast.desc =
            Pyast.Latest.Ast.Constant
             {Pyast.Latest.Ast.value =
-              Some (Pyast.V3_9_0.Num (Pyast.V3_9_0.Int 0));
+              Some (Pyast.V3_11_0.Num (Pyast.V3_11_0.Int 0));
              kind = None};
           lineno = 1; col_offset = 4; end_lineno = None; end_col_offset = None};
         type_comment = None};
@@ -85,10 +85,10 @@ The abstract syntax trees are automatically generated from
 [the ASDL grammar which is used in the CPython implementation](https://github.com/python/cpython/blob/main/Parser/Python.asdl "Python.asdl grammar file").
 Conversions can be performed between AST versions
 with the `Pyast.V*.To` functors: for instance, the module
-`Pyast.V2_5.To (Pyast.V3_9_0)` provides a module containing functions
+`Pyast.V2_5.To (Pyast.V3_11_0)` provides a module containing functions
 for converting all the non-terminal symbols of the grammar, and in
 particular a function
-`val mod_: Pyast.V2_5.mod_ -> Pyast.V3_9_0.mod_`.
+`val mod_: Pyast.V2_5.mod_ -> Pyast.V3_11_0.mod_`.
 These functions are automatically called by the functions `parse*`
 mentioned above to convert the abstract syntax tree parsed by the
 version of the Python interpreter available to the targeted version.

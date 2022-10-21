@@ -32,7 +32,11 @@ module V3_9_0 = V3_9_0
 
 module V3_10_0 = V3_10_0
 
-module Latest = V3_10_0
+module V3_10_2 = V3_10_2
+
+module V3_11_0 = V3_11_0
+
+module Latest = V3_11_0
 
 let versions : (module S) list = [
   (module V2_5);
@@ -50,7 +54,8 @@ let versions : (module S) list = [
   (module V3_7_0);
   (module V3_8_0);
   (module V3_9_0);
-  (module V3_10_0)
+  (module V3_10_0);
+  (module V3_11_0);
 ]
 
 let () =
@@ -87,7 +92,11 @@ let () =
     (module V3_8_0)
   else if v < { major = 3; minor = 10; subminor = 0 } then
     (module V3_9_0)
-  else if v < { major = 3; minor = 11; subminor = 0 } then
+  else if v < { major = 3; minor = 10; subminor = 2 } then
     (module V3_10_0)
+  else if v < { major = 3; minor = 11; subminor = 0 } then
+    (module V3_10_2)
+  else if v < { major = 3; minor = 12; subminor = 0 } then
+    (module V3_11_0)
   else
     raise (UnsupportedVersion v)

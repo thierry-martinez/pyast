@@ -6,6 +6,7 @@ else
   (cd cpython && git fetch)
 fi
 versions=($(cd cpython && git tag --sort v:refname | grep '^v[[:digit:].]\+$'))
+versions+=(v3.11.0rc2)
 last=""
 syntax_file="cpython/Parser/Python.asdl"
 for version in "${versions[@]}"; do
@@ -16,3 +17,4 @@ for version in "${versions[@]}"; do
         last="$target"
     fi
 done
+mv v3.11.0rc2.asdl v3.11.0.asdl

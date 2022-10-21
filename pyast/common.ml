@@ -76,3 +76,5 @@ let get_attr_string (obj : Py.Object.t) (attr : string) : Py.Object.t option =
     end
   else
     Some value
+
+let encoded_slice = "encoded slice"

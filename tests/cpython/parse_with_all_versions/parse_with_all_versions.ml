@@ -10,7 +10,8 @@ let main source_file =
     try
       ignore (Convert.mod_ mod_)
     with e ->
-      Printf.eprintf "Error while converting %s to %s: %s\n%s\n"
+      Printf.eprintf "Error while converting %s from %s to %s: %s\n%s\n"
+         source_file
          (Pyast.Version.to_string Current.version)
          (Pyast.Version.to_string Target.version)
          (Printexc.to_string e)
@@ -33,8 +34,7 @@ let info =
       `S Cmdliner.Manpage.s_bugs;
       `P "Email bug reports to <thierry.martinez@inria.fr>.";
     ] in
-  Cmdliner.Term.info "parse_with_all_versions" ~doc
-    ~exits:Cmdliner.Term.default_exits ~man
+  Cmdliner.Cmd.info "parse_with_all_versions" ~doc ~man
 
 let () =
-    Cmdliner.Term.exit (Cmdliner.Term.eval (options, info))
+  exit (Cmdliner.Cmd.eval (Cmdliner.Cmd.v info options))

@@ -6,6 +6,7 @@ else
   (cd cpython && git fetch)
 fi
 versions=($(ls -1 ../../python/*.asdl | sed -n 's/^.*\(v[[:digit:].]\+\)[.].*$/\1/p'))
+versions+=(v3.11.0rc2)
 syntax_file="cpython/Parser/Python.asdl"
 for version in "${versions[@]}"; do
     ( cd cpython && git checkout "$version" )

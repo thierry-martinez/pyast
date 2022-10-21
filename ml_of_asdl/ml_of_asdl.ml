@@ -88,7 +88,8 @@ let make_builder type_id full_name fields attributes body s =
     Ast_helper.Vb.mk (Ast_helper.Pat.var (Metapp.mkloc name)) expr in
   bindings, s
 
-let make_field (union_fields : Union_asdl.product) prefix (field : Asdl.field) :
+let make_field (version : Pyast_utils.Version.t)
+      (union_fields : Union_asdl.product) prefix (field : Asdl.field) :
   Ast_helper.lid * Parsetree.expression =
   let union_field = Union_asdl.String_map.find field.id union_fields in
   let var = Metapp.Exp.var (Ocamlsyntax.make_valid_identifier field.id) in
@@ -131,6 +132,23 @@ let make_field (union_fields : Union_asdl.product) prefix (field : Asdl.field) :
         | "expr_Subscript", "slice" when type_info.constructor_id = "Expr" ->
            [Ast_helper.Exp.case [%pat? Some (Slice arg)]
              [%expr arg]]
+        | "expr_Subscript", "slice" when type_info.constructor_id = "Slice" ->
+           [Ast_helper.Exp.case
+              [%pat? Some (Expr { desc = Tuple { elts; _ }; _})]
+              [%expr ExtSlice (List.map (fun (expr : expr) : slice ->
+                match expr with
+                | { desc = Attribute { value =
+                  { desc = Subscript { slice; _ }; _ }; attr; _ }; _ }
+                  when attr = Common.encoded_slice ->
+                    slice
+                | _ ->
+                    Index expr) elts)];
+            Ast_helper.Exp.case
+              [%pat? Some (Expr { desc = Attribute { value =
+                  { desc = Subscript { slice; _ }; _ }; attr; _ }; _ })]
+              [%expr slice];
+            Ast_helper.Exp.case [%pat? Some (Expr arg)]
+              [%expr Index arg]]
         | _ -> [] in
        Ast_helper.Exp.match_ [%expr ([%e var] : [%t Ast_helper.Typ.constr
          (Metapp.mklid
@@ -142,14 +160,14 @@ let make_field (union_fields : Union_asdl.product) prefix (field : Asdl.field) :
           other_cases @ [default_case]) in
   Metapp.mklid (Ocamlsyntax.make_valid_label field.id), expression
 
-let add_builder_of_product (definition : Asdl.definition option) type_id
+let add_builder_of_product version (definition : Asdl.definition option) type_id
     (union_attributes : Union_asdl.attributes)
     (union_product : Union_asdl.product) s =
   match definition with
   | Some { desc = Product product; attributes } ->
      let fields =
-       List.map (make_field union_product type_id) product @
-       List.map (make_field union_attributes type_id) attributes in
+       List.map (make_field version union_product type_id) product @
+       List.map (make_field version union_attributes type_id) attributes in
      let expr = Ast_helper.Exp.record fields None in
      make_builder type_id type_id union_product union_attributes expr s
   | None | Some { desc = Sum _ } ->
@@ -161,7 +179,7 @@ let add_builder_of_product (definition : Asdl.definition option) type_id
               (Format.asprintf "unavailable product in %s" type_id)]] in
       make_builder type_id type_id union_product union_attributes expr s
 
-let add_builder_of_constructor type_id union_attributes
+let add_builder_of_constructor version type_id union_attributes
     (constructors :
        (Asdl.constructor Union_asdl.String_map.t * Asdl.attributes) option)
     constructor_id union_fields (bindings, s) =
@@ -206,6 +224,15 @@ let add_builder_of_constructor type_id union_attributes
           [%expr Option.get value]
        | "slice", "Ellipsis" ->
           [%expr slice_index ~value:(expr_ellipsis ()) ()]
+       | "expr", "Slice" ->
+          [%expr
+            let attr = Common.encoded_slice in
+            let ctx = expr_context_load () in
+            let value = expr_tuple ~elts:[] ~ctx () in
+            let slice : expr_subscript_slice =
+              Slice (slice_slice ?upper ?step ?lower ()) in
+            expr_attribute
+              ~value:(expr_subscript ~value ~slice ~ctx () ) ~ctx ~attr ()]
        | "stmt", "Print" ->
           [%expr stmt_expr ~value:(expr_call
             ~func:(expr_name ~id:"print" ~ctx:(expr_context_load ()) ())
@@ -243,9 +270,10 @@ let add_builder_of_constructor type_id union_attributes
     | Some (constructor, attributes) ->
         let prefix = Ocamlsyntax.concat type_id constructor_id in
         let fields =
-          List.map (make_field union_fields prefix) constructor.fields in
+          List.map (make_field version union_fields prefix)
+            constructor.fields in
         let attributes =
-          List.map (make_field union_attributes prefix) attributes in
+          List.map (make_field version union_attributes prefix) attributes in
         let name =
           Metapp.mklid
             (Ocamlsyntax.make_valid_constructor_name constructor_id) in
@@ -276,23 +304,23 @@ let index_list (indexer : 'a -> string) (list : 'a list) :
     (fun accu item -> Union_asdl.String_map.add (indexer item) item accu)
     Union_asdl.String_map.empty list
 
-let add_builder_of_sum (definition : Asdl.definition option) type_id
+let add_builder_of_sum version (definition : Asdl.definition option) type_id
     (union_attributes : Union_asdl.attributes) (sum' : Union_asdl.sum)
     (bindings, (s : Parsetree.structure)) =
   match definition with
   | None | Some { desc = Product _ } ->
      Union_asdl.String_map.fold
-        (add_builder_of_constructor type_id union_attributes None)
+        (add_builder_of_constructor version type_id union_attributes None)
        sum' (bindings, s)
   | Some { desc = Sum sum; attributes } ->
      let constructors =
        index_list (fun (c : Asdl.constructor) -> c.constructor_id) sum in
      Union_asdl.String_map.fold
-        (add_builder_of_constructor type_id union_attributes
+        (add_builder_of_constructor version type_id union_attributes
           (Some (constructors, attributes)))
         sum' (bindings, s)
 
-let add_builder_of_definition indexed_definitions type_id
+let add_builder_of_definition version indexed_definitions type_id
     (definition' : Union_asdl.definition) (bindings, s) =
   let definition = Union_asdl.String_map.find_opt type_id indexed_definitions in
   let (bindings, s) =
@@ -300,14 +328,14 @@ let add_builder_of_definition indexed_definitions type_id
     | None -> (bindings, s)
     | Some product ->
         let binding, s =
-          add_builder_of_product definition type_id definition'.attributes
-            product s in
+          add_builder_of_product version definition type_id
+            definition'.attributes product s in
         binding :: bindings, s in
   let (bindings, s) =
     match definition'.desc.sum with
     | None -> (bindings, s)
     | Some product ->
-        add_builder_of_sum definition type_id definition'.attributes
+        add_builder_of_sum version definition type_id definition'.attributes
           product (bindings, s) in
   (bindings, s)
 
@@ -506,14 +534,14 @@ let converter_of_definition (union : Union_asdl.mod_)
     (Ocamlsyntax.make_valid_identifier definition.type_id))
     [%expr fun obj -> [%e converter]]
 
-let structure_of_asdl (asdl : Asdl.module_) (union : Union_asdl.mod_) =
+let structure_of_asdl version (asdl : Asdl.module_) (union : Union_asdl.mod_) =
   let indexed_definitions =
     index_list (fun (def : Asdl.definition) -> def.type_id) asdl.definitions in
   let type_declarations =
     Union_asdl.String_map.fold
       (type_declaration_of_definition indexed_definitions) union [] in
   let bindings, builders = Union_asdl.String_map.fold
-    (add_builder_of_definition indexed_definitions) union ([], []) in
+    (add_builder_of_definition version indexed_definitions) union ([], []) in
   let parsers =
     List.map (parser_of_definition union) asdl.definitions in
   let converters =
@@ -569,11 +597,12 @@ let main target version source_file union_file =
       let channel = open_in union_file in
       Redirect.read_and_close channel (fun () ->
         (Marshal.from_channel channel : Union_asdl.mod_)) in
+    let version = Pyast_utils.Version.parse version in
     let structure = [%str include Common
         let (version : Pyast_utils.Version.t) =
           [%e Refl.Lift.Exp.lift [%refl: Pyast_utils.Version.t] []
-          (Pyast_utils.Version.parse version)]
-      ] @ structure_of_asdl asdl union in
+          version]
+      ] @ structure_of_asdl version asdl union in
     with_target target (fun formatter ->
       Pprintast.structure formatter structure)
   with Asdl.Err.E e ->
@@ -608,7 +637,7 @@ let info =
       `S Cmdliner.Manpage.s_bugs;
       `P "Email bug reports to <thierry.martinez@inria.fr>.";
     ] in
-  Cmdliner.Term.info "ml_of_asdl" ~doc ~exits:Cmdliner.Term.default_exits ~man
+  Cmdliner.Cmd.info "ml_of_asdl" ~doc ~man
 
 let () =
-    Cmdliner.Term.exit (Cmdliner.Term.eval (options, info))
+  exit (Cmdliner.Cmd.eval (Cmdliner.Cmd.v info options))
