@@ -18,7 +18,7 @@
  (synopsis "Python AST")
  (description "\
 This library provides versioned abstract syntax tree for all Python
-versions from Python 2.5 to Python 3.10.
+versions from Python 2.5 to Python 3.11.
 ")
  (depends
   (ocaml (>= 4.03.0))
