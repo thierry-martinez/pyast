@@ -202,7 +202,7 @@ let info =
       `S Cmdliner.Manpage.s_bugs;
       `P "Email bug reports to <thierry.martinez@inria.fr>.";
     ] in
-  Cmdliner.Term.info "union_asdl" ~doc ~exits:Cmdliner.Term.default_exits ~man
+  Cmdliner.Cmd.info "union_asdl" ~doc ~man
 
 let () =
-  Cmdliner.Term.exit (Cmdliner.Term.eval (options, info))
+  exit (Cmdliner.Cmd.eval (Cmdliner.Cmd.v info options))
