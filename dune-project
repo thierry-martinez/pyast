@@ -24,7 +24,7 @@ versions from Python 2.5 to Python 3.11.
   (ocaml (>= 4.03.0))
   (pyml (>= 20210226))
   (refl (>= 0.4.0))
-  (cmdliner (>= 1.0.4))
+  (cmdliner (>= 1.1.0))
   (redirect (>= 0.2.0))
   (stdcompat (>= 10))
   (menhir (>= 20210419))
